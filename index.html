@@ -1,8 +1,237 @@
 <!DOCTYPE html>
-<html>
-<body>
-  <h1 id="app">Loading...</h1>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduLink Landing Page</title>
 
-  <script src="./dist/main.js"></script>
+<!-- TypeScript compiled script -->
+<script type="module" src="./dist/main.js"></script>
+
+<!-- Lucide icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+/* ------------------ CSS Reset & Core Styling ------------------ */
+* { margin:0; padding:0; box-sizing:border-box; }
+::-webkit-scrollbar { display:none; }
+body { background-color:#fff; color:#1a1a1a; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; scroll-behavior:smooth; overflow-x:hidden; }
+h1,h2,h3,.serif-text { font-family:"Charter","Bitstream Charter",Georgia,"Times New Roman",serif; font-weight:400; }
+
+/* ------------------ NAVIGATION ------------------ */
+nav { padding:1.1rem 4rem; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background-color:#fff; z-index:9999; border-bottom:1px solid #e5e5e5; }
+.logo { font-size:1.05rem; font-weight:600; letter-spacing:-0.01em; }
+.nav-right { display:flex; align-items:center; gap:2rem; }
+.nav-links-group { display:flex; gap:2.2rem; align-items:center; }
+.nav-links { font-size:0.9rem; font-weight:500; text-decoration:none; color:#555; transition:color 0.2s; }
+.nav-links:hover { color:#000; }
+.split-button { display:inline-flex; align-items:center; background-color:#1a1a1a; color:#fff; border-radius:12px; padding:0; cursor:pointer; border:none; text-decoration:none; width:fit-content; transition:transform 0.2s ease, background-color 0.2s; }
+.split-button:hover { background-color:#333; transform:translateY(-2px); }
+.sb-text { padding:0.5rem 1rem 0.5rem 1.2rem; font-size:0.9rem; font-weight:500; }
+.sb-divider { width:1px; height:18px; background-color:rgba(255,255,255,0.2); }
+.sb-icon { padding:0.5rem 0.8rem; display:flex; align-items:center; }
+.sb-icon svg { width:16px; height:16px; stroke-width:2; }
+
+/* ------------------ HERO ------------------ */
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:4rem 2rem 3rem 2rem; max-width:850px; margin:0 auto; }
+.hero h1 { font-size:clamp(2.8rem,5vw,4.2rem); line-height:1.1; margin-bottom:1.2rem; letter-spacing:-0.02em; }
+.hero p { font-size:1.2rem; color:#4a4a4a; margin-bottom:2rem; max-width:680px; line-height:1.5; }
+.cta-button { background-color:#1a1a1a; color:#fff; border:none; padding:0.9rem 2.2rem; font-size:1rem; font-weight:500; border-radius:10px; cursor:pointer; transition:transform 0.2s ease, background-color 0.2s; }
+.cta-button:hover { background-color:#333; transform:translateY(-2px); }
+
+/* ------------------ EXPANDING IMAGE ------------------ */
+.image-section { height:200vh; position:relative; padding-top:4rem; }
+.image-container { --progress:0; --curve:3rem; --video-scale:1.15; position:sticky; top:calc(8vh*(1 - var(--progress))); margin:0 auto; width:calc(85% + (var(--progress)*(100% - 85%))); height:calc(60vh + (var(--progress)*(100vh - 60vh))); border-radius:var(--curve); background-color:#000; display:flex; justify-content:center; align-items:center; overflow:hidden; z-index:10; box-shadow:0 30px 60px rgba(0,0,0,0.15); }
+.bg-video { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; transform:scale(var(--video-scale)); transform-origin:center; }
+.image-container::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:1; }
+.inner-content { position:relative; z-index:2; opacity:var(--progress); transform:translateY(calc((1 - var(--progress))*20px)); display:flex; align-items:center; gap:1.2rem; }
+.inside-logo { height:40px; width:auto; }
+.tagline { font-family:"Charter",serif; font-size:1.5rem; color:#fff; white-space:nowrap; letter-spacing:0.02em; }
+
+/* ------------------ INFO & SERVICES ------------------ */
+.info-section { position:relative; z-index:20; max-width:100%; background-color:#fff; padding-top:8rem; padding-bottom:3rem; }
+.info-content { max-width:1400px; margin:0 auto; padding:0 4rem; display:flex; gap:6rem; }
+.info-left { flex:1.2; display:flex; flex-direction:column; justify-content:flex-start; }
+.info-heading { font-size:clamp(2.5rem,4vw,3.8rem); font-weight:400; line-height:1.15; color:#111; margin-bottom:1.5rem; }
+.avatar-group { display:inline-flex; align-items:center; vertical-align:middle; margin:0 0.5rem; }
+.avatar-group img { width:48px; height:48px; border-radius:50%; border:3px solid #fff; margin-left:-15px; object-fit:cover; background-color:#f0f0f0; }
+.avatar-group img:first-child { margin-left:0; }
+.info-subtext { font-size:1.1rem; color:#444; line-height:1.6; max-width:480px; margin-bottom:2.5rem; }
+.info-right { flex:1; display:flex; flex-direction:column; gap:1.5rem; }
+.service-card { border:1px solid #eaeaea; border-radius:1rem; padding:2.5rem; background-color:#fff; position:relative; transition:box-shadow 0.2s ease, border-color 0.2s; cursor:pointer; }
+.service-card:hover { border-color:#ccc; box-shadow:0 10px 30px rgba(0,0,0,0.03); }
+.service-card h4 { font-size:1.25rem; font-weight:500; margin-bottom:0.8rem; color:#111; }
+.service-card p { font-size:0.95rem; color:#666; line-height:1.5; max-width:85%; }
+.card-arrow { position:absolute; top:2.5rem; right:2.5rem; width:40px; height:40px; border:1px solid #eaeaea; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#888; transition:background-color 0.2s,color 0.2s; }
+.service-card:hover .card-arrow { background-color:#111; color:#fff; border-color:#111; }
+.card-arrow svg { width:16px; height:16px; stroke-width:2; }
+
+/* ------------------ TRUSTED LOGOS ------------------ */
+.trusted-section { max-width:1400px; margin:0 auto; padding:2rem 4rem 3rem 4rem; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; gap:4rem; }
+.trusted-text { font-size:0.95rem; font-weight:500; color:#555; flex-shrink:0; }
+.logos-container { display:flex; align-items:center; justify-content:space-between; flex:1; gap:2rem; opacity:0.6; filter:grayscale(100%); }
+.logo-item { font-weight:600; font-size:1.1rem; }
+
+/* ------------------ FOOTER ------------------ */
+.footer-wrapper { background-color:#fff; padding:3rem 4rem 4rem 4rem; display:flex; justify-content:center; }
+.footer-card { background-color:#111; width:100%; max-width:1400px; border-radius:1.5rem; padding:4.5rem; display:flex; justify-content:space-between; color:#fff; gap:3rem; }
+.footer-brand { flex:1.5; display:flex; flex-direction:column; padding-right:2rem; }
+.footer-logo { display:flex; align-items:center; gap:0.8rem; font-weight:600; font-size:1.2rem; letter-spacing:-0.01em; color:#fff; margin-bottom:2rem; }
+.footer-logo img { height:28px; width:auto; }
+.footer-brand h3 { font-size:1.8rem; color:#888; line-height:1.3; margin-bottom:3rem; font-weight:300; }
+.footer-brand h3 span { color:#fff; }
+.newsletter-label { font-size:0.9rem; color:#888; margin-bottom:1rem; }
+.newsletter-form { display:flex; align-items:center; background-color:#0a0a0a; border:1px solid #333; border-radius:2rem; padding:0.3rem 0.3rem 0.3rem 1.2rem; max-width:350px; }
+.newsletter-form input { background:transparent; border:none; color:#fff; font-size:0.9rem; flex:1; outline:none; }
+.newsletter-form input::placeholder { color:#555; }
+.newsletter-btn { background-color:#222; border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; color:#888; cursor:pointer; transition:all 0.2s; }
+.newsletter-btn:hover { background-color:#444; color:#fff; }
+.footer-links-col { flex:1; display:flex; flex-direction:column; gap:1.5rem; border-left:1px solid rgba(255,255,255,0.08); padding-left:3rem; }
+.footer-links-col a { color:#888; text-decoration:none; font-size:1rem; }
+.footer-links-col a:hover { color:#fff; }
+.footer-socials { display:flex; flex-direction:column; gap:1rem; border-left:1px solid rgba(255,255,255,0.08); padding-left:3rem; align-items:center; justify-content:center; }
+.social-icon { width:44px; height:44px; border-radius:50%; border:1px solid #333; display:flex; align-items:center; justify-content:center; color:#888; text-decoration:none; }
+.social-icon:hover { border-color:#fff; color:#fff; }
+.social-icon svg { width:18px; height:18px; stroke-width:2; }
+
+/* ------------------ RESPONSIVE ------------------ */
+@media (max-width:1100px){ .info-content{flex-direction:column;gap:4rem; padding:0 3rem} .trusted-section{flex-direction:column;align-items:flex-start;gap:2rem;padding:2rem 3rem 3rem 3rem;} .logos-container{flex-wrap:wrap;width:100%;justify-content:flex-start;gap:3rem;} .footer-card{flex-wrap:wrap;padding:3rem;} .footer-brand{flex:100%;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:2rem;padding-right:0;margin-bottom:2rem;} .footer-links-col{border-left:none;padding-left:0;} .footer-socials{flex-direction:row;border-left:none;padding-left:0;width:100%;justify-content:flex-start;border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;margin-top:1rem;} }
+@media (max-width:950px){ nav{padding:1.1rem 2rem} .nav-links-group{display:none} .image-container{width:calc(90% + (var(--progress)*(100% - 90%)))} .footer-wrapper{padding:2rem} .info-heading{font-size:2.2rem} .info-content{padding:0 2rem} }
+</style>
+</head>
+<body>
+
+<!-- ------------------ NAV ------------------ -->
+<nav>
+<div class="logo">EduLink BHT</div>
+<div class="nav-right">
+<div class="nav-links-group">
+<a href="#" class="nav-links">About</a>
+<a href="#" class="nav-links">Policy</a>
+<a href="#" class="nav-links">Membership</a>
+<a href="#" class="nav-links">Events</a>
+<a href="#" class="nav-links">Blog</a>
+<a href="#" class="nav-links">Research &nearr;</a>
+</div>
+<button class="split-button">
+<span class="sb-text">Try EduLink</span>
+<div class="sb-divider"></div>
+<div class="sb-icon">
+<i data-lucide="chevron-down"></i>
+</div>
+</button>
+</div>
+</nav>
+
+<!-- ------------------ HERO ------------------ -->
+<header class="hero">
+<h1 class="serif-text">Empowering Youth and Education</h1>
+<p>The only social media platform that promotes education through fun content, helping young minds and all age groups navigate the modern world.</p>
+<button class="cta-button">Discover Opportunities</button>
+</header>
+
+<!-- ------------------ EXPANDING VIDEO ------------------ -->
+<section class="image-section">
+<div class="image-container" id="expandingImage">
+<video class="bg-video" autoplay loop muted playsinline>
+<source src="https://res.cloudinary.com/dcpuyfslg/video/upload/v1773725540/206779_cylgz0.mp4" type="video/mp4">
+</video>
+<div class="inner-content">
+<img src="https://i.imghippo.com/files/Aj1827DWQ.png" alt="EduLink Logo" class="inside-logo">
+<p class="tagline">Make a change, be the change.</p>
+</div>
+</div>
+</section>
+
+<!-- ------------------ INFO & SERVICES ------------------ -->
+<section class="info-section">
+<div class="info-content">
+<div class="info-left">
+<h2 class="info-heading">
+Learn from the
+<span class="avatar-group">
+<img src="https://i.pravatar.cc/100?img=11" alt="Expert 1">
+<img src="https://i.pravatar.cc/100?img=12" alt="Expert 2">
+<img src="https://i.pravatar.cc/100?img=13" alt="Expert 3">
+</span>
+experts and <br>share your opinion.
+</h2>
+<p class="info-subtext">Growing as a community matters, so does individually.</p>
+<a href="#" class="split-button">
+<span class="sb-text">Book a Lesson</span>
+<div class="sb-divider"></div>
+<div class="sb-icon">
+<i data-lucide="calendar"></i>
+</div>
+</a>
+</div>
+<div class="info-right">
+<div class="service-card">
+<h4>Backstory</h4>
+<p>Learn about the journey of edulink.</p>
+<div class="card-arrow">
+<i data-lucide="arrow-up-right"></i>
+</div>
+</div>
+<div class="service-card">
+<h4>Development</h4>
+<p>Lessons from the mistakes.</p>
+<div class="card-arrow">
+<i data-lucide="arrow-up-right"></i>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ------------------ TRUSTED LOGOS ------------------ -->
+<section class="trusted-section">
+<div class="trusted-text">Working with <strong>100+</strong> students</div>
+<div class="logos-container">
+<div class="logo-item" style="font-weight:600;">The Royal Academy</div>
+<div class="logo-item" style="font-weight:500; font-size:1.1rem;">Druk Gyalpo's Institute</div>
+<div class="logo-item" style="font-weight:700;">Newton</div>
+<div class="logo-item" style="font-weight:600; font-size:1.2rem;">Gravitas</div>
+<div class="logo-item" style="font-weight:800; font-size:1.05rem;">AquaReclaim</div>
+</div>
+</section>
+
+<!-- ------------------ FOOTER ------------------ -->
+<div class="footer-wrapper">
+<footer class="footer-card">
+<div class="footer-brand">
+<div class="footer-logo">
+<img src="https://i.imghippo.com/files/Aj1827DWQ.png" alt="Icon"> Gravitas Crop
+</div>
+<h3>Empowering minds<br><span>for a better future.</span></h3>
+<p class="newsletter-label">Subscribe to our newsletter</p>
+<div class="newsletter-form">
+<input type="email" placeholder="Your email address">
+<button class="newsletter-btn">
+<i data-lucide="arrow-right"></i>
+</button>
+</div>
+</div>
+<div class="footer-links-col">
+<a href="#">Our Services +</a>
+<a href="#">Projects</a>
+<a href="#">Our Process</a>
+<a href="#">Referral Program</a>
+</div>
+<div class="footer-links-col">
+<a href="#">About Us</a>
+<a href="#">Resources</a>
+<a href="#">Contact</a>
+<a href="#">Blog</a>
+</div>
+<div class="footer-socials">
+<a href="#" class="social-icon"><i data-lucide="globe"></i></a>
+<a href="#" class="social-icon"><i data-lucide="dribbble"></i></a>
+<a href="#" class="social-icon"><i data-lucide="instagram"></i></a>
+<a href="#" class="social-icon"><i data-lucide="twitter"></i></a>
+</div>
+</footer>
+</div>
+
 </body>
 </html>
